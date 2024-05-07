@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccountManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">AccountManagerTest Coverage Results</a> &gt; <a href="index.source.html" class="el_package">root.integrat</a> &gt; <span class="el_source">AccountManager.java</span></div><h1>AccountManager.java</h1><pre class="source lang-java linenums">package root.integrat;
+
+import java.util.concurrent.ConcurrentHashMap;
+
+<span class="fc" id="L5">public abstract class AccountManager {</span>
+
+  private IServer server;
+<span class="fc" id="L8">  private ConcurrentHashMap&lt;String, Long&gt; activeAccounts = new ConcurrentHashMap&lt;&gt;();</span>
+  public void init(IServer s) {
+<span class="fc" id="L10">    server = s;</span>
+<span class="fc" id="L11">  }</span>
+  public AccountManagerResponse callLogin(String login, String password) {
+<span class="fc" id="L13">    Long session = activeAccounts.get(login);</span>
+<span class="fc bfc" id="L14" title="All 2 branches covered.">    if(session!=null)</span>
+<span class="fc" id="L15">      return AccountManagerResponse.ACCOUNT_MANAGER_RESPONSE;</span>
+<span class="fc" id="L16">    ServerResponse ret = server.login(login, makeSecure(password));</span>
+<span class="pc bpc" id="L17" title="1 of 4 branches missed.">    switch(ret.code) {</span>
+      case ServerResponse.ALREADY_LOGGED:
+<span class="nc" id="L19">        return AccountManagerResponse.ACCOUNT_MANAGER_RESPONSE;</span>
+      case ServerResponse.NO_USER_INCORRECT_PASSWORD:
+<span class="fc" id="L21">        return AccountManagerResponse.NO_USER_INCORRECT_PASSWORD_RESPONSE;</span>
+      case ServerResponse.SUCCESS:{
+<span class="fc" id="L23">        Object answ = ret.response;</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if(answ instanceof Long) {</span>
+<span class="fc" id="L25">          activeAccounts.put(login, (Long) answ);</span>
+<span class="fc" id="L26">          return new AccountManagerResponse(AccountManagerResponse.SUCCEED, answ);</span>
+        }
+        break;
+      }
+    }
+<span class="fc" id="L31">    return new AccountManagerResponse(AccountManagerResponse.UNDEFINED_ERROR, ret);</span>
+  }
+  public AccountManagerResponse callLogout(String user, long session) {
+<span class="fc" id="L34">    Long correctSession = activeAccounts.get(user);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">    if(correctSession == null)</span>
+<span class="fc" id="L36">      return AccountManagerResponse.NOT_LOGGED_RESPONSE;</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">    if(correctSession != session)</span>
+<span class="fc" id="L38">      return AccountManagerResponse.INCORRECT_SESSION_RESPONSE;</span>
+<span class="fc" id="L39">    ServerResponse resp = server.logout(session);</span>
+<span class="pc bpc" id="L40" title="1 of 3 branches missed.">    switch(resp.code){</span>
+      case ServerResponse.NOT_LOGGED:
+<span class="nc" id="L42">        return AccountManagerResponse.NOT_LOGGED_RESPONSE;</span>
+      case ServerResponse.SUCCESS:
+<span class="fc" id="L44">        activeAccounts.remove(user);</span>
+<span class="fc" id="L45">        return AccountManagerResponse.SUCCEED_RESPONSE;</span>
+    }
+<span class="fc" id="L47">    return new AccountManagerResponse(AccountManagerResponse.UNDEFINED_ERROR, resp);</span>
+  }
+  public AccountManagerResponse withdraw(String login, long session, double amount){
+<span class="fc" id="L50">    Long stored = activeAccounts.get(login);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">    if(stored == null)</span>
+<span class="fc" id="L52">      return AccountManagerResponse.NOT_LOGGED_RESPONSE;</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">    if(stored!=session)</span>
+<span class="fc" id="L54">      return AccountManagerResponse.INCORRECT_SESSION_RESPONSE;</span>
+<span class="fc" id="L55">    ServerResponse resp = server.withdraw(session, amount);</span>
+<span class="pc bpc" id="L56" title="1 of 4 branches missed.">    switch(resp.code){</span>
+      case ServerResponse.NOT_LOGGED:
+<span class="nc" id="L58">        return AccountManagerResponse.NOT_LOGGED_RESPONSE;</span>
+      case ServerResponse.NO_MONEY:
+<span class="fc" id="L60">        Object r = resp.response;</span>
+<span class="pc bpc" id="L61" title="2 of 4 branches missed.">        if(r!=null &amp;&amp; r instanceof Double)</span>
+<span class="fc" id="L62">          return new AccountManagerResponse(AccountManagerResponse.NO_MONEY, (Double)r);</span>
+        break;
+      case ServerResponse.SUCCESS:
+<span class="fc" id="L65">        r = resp.response;</span>
+<span class="pc bpc" id="L66" title="2 of 4 branches missed.">        if(r!=null &amp;&amp; r instanceof Double)</span>
+<span class="fc" id="L67">          return new AccountManagerResponse(AccountManagerResponse.SUCCEED, (Double)r);</span>
+        break;
+    }
+<span class="fc" id="L70">    return new AccountManagerResponse(AccountManagerResponse.UNDEFINED_ERROR, resp);</span>
+  }
+  public AccountManagerResponse deposit(String login, long session, double amount){
+<span class="fc" id="L73">    Long stored = activeAccounts.get(login);</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">    if(stored == null)</span>
+<span class="fc" id="L75">      return AccountManagerResponse.NOT_LOGGED_RESPONSE;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">    if(stored!=session)</span>
+<span class="fc" id="L77">      return AccountManagerResponse.INCORRECT_SESSION_RESPONSE;</span>
+<span class="fc" id="L78">    ServerResponse resp = server.deposit(session, amount);</span>
+<span class="pc bpc" id="L79" title="1 of 3 branches missed.">    switch(resp.code){</span>
+      case ServerResponse.NOT_LOGGED:
+<span class="nc" id="L81">        return AccountManagerResponse.NOT_LOGGED_RESPONSE;</span>
+      case ServerResponse.SUCCESS:
+<span class="fc" id="L83">        Object r = resp.response;</span>
+<span class="pc bpc" id="L84" title="2 of 4 branches missed.">        if(r!=null &amp;&amp; r instanceof Double)</span>
+<span class="fc" id="L85">          return new AccountManagerResponse(AccountManagerResponse.SUCCEED, (Double)r);</span>
+        break;
+    }
+<span class="fc" id="L88">    return new AccountManagerResponse(AccountManagerResponse.UNDEFINED_ERROR, resp);</span>
+  }
+  public AccountManagerResponse getBalance(String login, long session){
+<span class="fc" id="L91">    Long stored = activeAccounts.get(login);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">    if(stored == null)</span>
+<span class="fc" id="L93">      return AccountManagerResponse.NOT_LOGGED_RESPONSE;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">    if(stored!=session)</span>
+<span class="fc" id="L95">      return AccountManagerResponse.INCORRECT_SESSION_RESPONSE;</span>
+<span class="fc" id="L96">    ServerResponse resp = server.getBalance(session);</span>
+<span class="pc bpc" id="L97" title="1 of 3 branches missed.">    switch(resp.code){</span>
+      case ServerResponse.NOT_LOGGED:
+<span class="nc" id="L99">        return AccountManagerResponse.NOT_LOGGED_RESPONSE;</span>
+      case ServerResponse.SUCCESS:
+<span class="fc" id="L101">        Object r = resp.response;</span>
+<span class="pc bpc" id="L102" title="2 of 4 branches missed.">        if(r!=null &amp;&amp; r instanceof Double)</span>
+<span class="fc" id="L103">          return new AccountManagerResponse(AccountManagerResponse.SUCCEED, (Double)r);</span>
+        break;
+    }
+<span class="fc" id="L106">    return new AccountManagerResponse(AccountManagerResponse.UNDEFINED_ERROR, resp);</span>
+  }
+  protected abstract String makeSecure(String password);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

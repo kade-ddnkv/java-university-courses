@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VendingMachine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VendingMachineTest Coverage Results</a> &gt; <a href="index.source.html" class="el_package">root.vending</a> &gt; <span class="el_source">VendingMachine.java</span></div><h1>VendingMachine.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2009 ISP RAS.
+ * 109004, A. Solzhenitsina, 25, Moscow, Russia.
+ * All rights reserved.
+ *
+ * $Id$
+ * Created on Jan 13, 2016
+ *
+ */
+
+package root.vending;
+
+/**
+ * @author Victor Kuliamin
+ *
+ */
+<span class="fc" id="L17">public class VendingMachine</span>
+{
+<span class="fc" id="L19">    private long id = 117345294655382L;</span>
+
+<span class="fc" id="L21">    public enum Mode {OPERATION, ADMINISTERING};</span>
+<span class="fc" id="L22">    private Mode mode = Mode.OPERATION;</span>
+
+<span class="fc" id="L24">    public enum Response {  OK</span>
+<span class="fc" id="L25">        , ILLEGAL_OPERATION</span>
+<span class="fc" id="L26">        , INVALID_PARAM</span>
+<span class="fc" id="L27">        , CANNOT_PERFORM</span>
+<span class="fc" id="L28">        , TOO_BIG_CHANGE</span>
+<span class="fc" id="L29">        , UNSUITABLE_CHANGE</span>
+<span class="fc" id="L30">        , INSUFFICIENT_PRODUCT</span>
+<span class="fc" id="L31">        , INSUFFICIENT_MONEY</span>
+    };
+
+<span class="fc" id="L34">    private int max1 = 30;</span>
+<span class="fc" id="L35">    private int max2 = 40;</span>
+
+<span class="fc" id="L37">    private int num1 = 0;</span>
+<span class="fc" id="L38">    private int num2 = 0;</span>
+
+<span class="fc" id="L40">    private int price1 = 8;</span>
+<span class="fc" id="L41">    private int price2 = 5;</span>
+
+<span class="fc" id="L43">    private int maxc1  = 50;</span>
+<span class="fc" id="L44">    private int maxc2  = 50;</span>
+
+<span class="fc" id="L46">    private int coins1  = 0;</span>
+<span class="fc" id="L47">    private int coins2  = 0;</span>
+
+<span class="fc" id="L49">    public static int coinval1 = 1;</span>
+<span class="fc" id="L50">    public static int coinval2 = 2;</span>
+
+<span class="fc" id="L52">    private int balance = 0;</span>
+
+    public int getNumberOfProduct1()
+    {
+<span class="fc" id="L56">        return num1;</span>
+    }
+
+    public int getNumberOfProduct2()
+    {
+<span class="fc" id="L61">        return num2;</span>
+    }
+
+    public int getCurrentBalance()
+    {
+<span class="fc" id="L66">        return balance;</span>
+    }
+
+    public Mode getCurrentMode()
+    {
+<span class="fc" id="L71">        return mode;</span>
+    }
+
+    public int getCurrentSum()
+    {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if(mode == Mode.OPERATION)</span>
+<span class="fc" id="L77">            return 0;</span>
+        else
+<span class="fc" id="L79">            return coins1*coinval1+coins2*coinval2;</span>
+    }
+
+    public int getCoins1()
+    {
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if(mode == Mode.OPERATION)</span>
+<span class="fc" id="L85">            return 0;</span>
+        else
+<span class="fc" id="L87">            return coins1;</span>
+    }
+
+    public int getCoins2()
+    {
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if(mode == Mode.OPERATION)</span>
+<span class="fc" id="L93">            return 0;</span>
+        else
+<span class="fc" id="L95">            return coins2;</span>
+    }
+
+    public int getPrice1()
+    {
+<span class="fc" id="L100">        return price1;</span>
+    }
+
+    public int getPrice2()
+    {
+<span class="fc" id="L105">        return price2;</span>
+    }
+
+    public Response fillProducts()
+    {
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if(mode == Mode.OPERATION) return Response.ILLEGAL_OPERATION;</span>
+<span class="fc" id="L111">        num1 = max1;</span>
+<span class="fc" id="L112">        num2 = max2;</span>
+<span class="fc" id="L113">        return Response.OK;</span>
+    }
+
+    public Response fillCoins(int c1, int c2)
+    {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if(mode == Mode.OPERATION) return Response.ILLEGAL_OPERATION;</span>
+<span class="fc bfc" id="L119" title="All 4 branches covered.">        if(c1 &lt;= 0 || c1 &gt; maxc1) return Response.INVALID_PARAM;</span>
+<span class="fc bfc" id="L120" title="All 4 branches covered.">        if(c2 &lt;= 0 || c2 &gt; maxc2) return Response.INVALID_PARAM;</span>
+<span class="fc" id="L121">        coins1 = c1;</span>
+<span class="fc" id="L122">        coins2 = c2;</span>
+<span class="fc" id="L123">        return Response.OK;</span>
+    }
+
+    public Response enterAdminMode(long code)
+    {
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if(balance != 0) return Response.CANNOT_PERFORM;</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if(code != id) return Response.INVALID_PARAM;</span>
+
+<span class="fc" id="L131">        mode = Mode.ADMINISTERING;</span>
+<span class="fc" id="L132">        return Response.OK;</span>
+    }
+
+    public void exitAdminMode()
+    {
+<span class="fc" id="L137">        mode = Mode.OPERATION;</span>
+<span class="fc" id="L138">    }</span>
+
+    public Response setPrices(int p1, int p2)
+    {
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        if(mode == Mode.OPERATION) return Response.ILLEGAL_OPERATION;</span>
+<span class="fc bfc" id="L143" title="All 4 branches covered.">        if(p1 &lt;= 0 || p2 &lt;= 0) return Response.INVALID_PARAM;</span>
+<span class="fc" id="L144">        price1 = p1;</span>
+<span class="fc" id="L145">        price2 = p2;</span>
+<span class="fc" id="L146">        return Response.OK;</span>
+    }
+
+    public Response putCoin1()
+    {
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if(mode == Mode.ADMINISTERING) return Response.ILLEGAL_OPERATION;</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        if(coins1 == maxc1)            return Response.CANNOT_PERFORM;</span>
+
+<span class="fc" id="L154">        balance += coinval1;</span>
+<span class="fc" id="L155">        coins1++;</span>
+
+<span class="fc" id="L157">        return Response.OK;</span>
+    }
+
+    public Response putCoin2()
+    {
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if(mode == Mode.ADMINISTERING) return Response.ILLEGAL_OPERATION;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        if(coins2 == maxc2)            return Response.CANNOT_PERFORM;</span>
+
+<span class="fc" id="L165">        balance += coinval2;</span>
+<span class="fc" id="L166">        coins2++;</span>
+
+<span class="fc" id="L168">        return Response.OK;</span>
+    }
+
+    public Response returnMoney()
+    {
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if(mode == Mode.ADMINISTERING) return Response.ILLEGAL_OPERATION;</span>
+
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        if(balance == 0)</span>
+        {
+<span class="fc" id="L177">            return Response.OK;</span>
+        }
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        else if(balance &gt; coins1*coinval1 + coins2*coinval2)</span>
+        {
+<span class="nc" id="L181">            return Response.TOO_BIG_CHANGE;</span>
+        }
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        else if(balance &gt; coins2*coinval2)</span>
+        {
+            // using coinval1 == 1
+<span class="fc" id="L186">            coins1 -= (balance-coins2*coinval2);</span>
+<span class="fc" id="L187">            coins2 = 0;</span>
+<span class="fc" id="L188">            balance = 0;</span>
+
+<span class="fc" id="L190">            return Response.OK;</span>
+        }
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        else if(balance%coinval2 == 0)</span>
+        {
+<span class="fc" id="L194">            coins2 -= (balance/coinval2);</span>
+<span class="fc" id="L195">            balance = 0;</span>
+
+<span class="fc" id="L197">            return Response.OK;</span>
+        }
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">        else if(coins1 == 0)</span>
+        {
+            // using coinval1 == 1
+<span class="nc" id="L202">            return Response.UNSUITABLE_CHANGE;</span>
+        }
+        else
+        {
+            // using coinval1 == 1
+<span class="fc" id="L207">            coins2 -= (balance/coinval2);</span>
+<span class="fc" id="L208">            coins1--;</span>
+<span class="fc" id="L209">            balance = 0;</span>
+
+<span class="fc" id="L211">            return Response.OK;</span>
+        }
+    }
+
+    public Response giveProduct1(int number)
+    {
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        if(mode == Mode.ADMINISTERING) return Response.ILLEGAL_OPERATION;</span>
+
+<span class="fc bfc" id="L219" title="All 4 branches covered.">        if(number &lt;= 0 || number &gt; max1) return Response.INVALID_PARAM;</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if(number &gt; num1) return Response.INSUFFICIENT_PRODUCT;</span>
+
+<span class="fc" id="L222">        int res = balance - number*price1;</span>
+
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        if(res &lt; 0) return Response.INSUFFICIENT_MONEY;</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">        else if(res &gt; coins1*coinval1 + coins2*coinval2)</span>
+        {
+<span class="nc" id="L227">            return Response.TOO_BIG_CHANGE;</span>
+        }
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        else if(res &gt; coins2*coinval2)</span>
+        {
+            // using coinval1 == 1
+<span class="fc" id="L232">            coins1 -= (res-coins2*coinval2);</span>
+<span class="fc" id="L233">            coins2 = 0;</span>
+<span class="fc" id="L234">            balance = 0;</span>
+<span class="fc" id="L235">            num1 -= number;</span>
+
+<span class="fc" id="L237">            return Response.OK;</span>
+        }
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        else if(res%coinval2 == 0)</span>
+        {
+<span class="fc" id="L241">            coins2 -= (res/coinval2);</span>
+<span class="fc" id="L242">            balance = 0;</span>
+<span class="fc" id="L243">            num1 -= number;</span>
+
+<span class="fc" id="L245">            return Response.OK;</span>
+        }
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        else if(coins1 == 0)</span>
+        {
+            // using coinval1 == 1
+<span class="fc" id="L250">            return Response.UNSUITABLE_CHANGE;</span>
+        }
+        else
+        {
+            // using coinval1 == 1
+<span class="fc" id="L255">            coins2 -= (res/coinval2);</span>
+<span class="fc" id="L256">            coins1--;</span>
+<span class="fc" id="L257">            balance = 0;</span>
+<span class="fc" id="L258">            num1 -= number;</span>
+
+<span class="fc" id="L260">            return Response.OK;</span>
+        }
+    }
+
+    public Response giveProduct2(int number)
+    {
+<span class="fc bfc" id="L266" title="All 2 branches covered.">        if(mode == Mode.ADMINISTERING) return Response.ILLEGAL_OPERATION;</span>
+
+<span class="fc bfc" id="L268" title="All 4 branches covered.">        if(number &lt;= 0 || number &gt; max2) return Response.INVALID_PARAM;</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">        if(number &gt; num2) return Response.INSUFFICIENT_PRODUCT;</span>
+
+<span class="fc" id="L271">        int res = balance - number*price2;</span>
+
+<span class="fc bfc" id="L273" title="All 2 branches covered.">        if(res &lt; 0) return Response.INSUFFICIENT_MONEY;</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">        else if(res &gt; coins1*coinval1 + coins2*coinval2)</span>
+        {
+<span class="nc" id="L276">            return Response.TOO_BIG_CHANGE;</span>
+        }
+<span class="fc bfc" id="L278" title="All 2 branches covered.">        else if(res &gt; coins2*coinval2)</span>
+        {
+            // using coinval1 == 1
+<span class="fc" id="L281">            coins1 -= (res-coins2*coinval2);</span>
+<span class="fc" id="L282">            coins2 = 0;</span>
+<span class="fc" id="L283">            balance = 0;</span>
+<span class="fc" id="L284">            num2 -= number;</span>
+
+<span class="fc" id="L286">            return Response.OK;</span>
+        }
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        else if(res%coinval2 == 0)</span>
+        {
+<span class="fc" id="L290">            coins2 -= (res/coinval2);</span>
+<span class="fc" id="L291">            balance = 0;</span>
+<span class="fc" id="L292">            num2 -= number;</span>
+
+<span class="fc" id="L294">            return Response.OK;</span>
+        }
+<span class="fc bfc" id="L296" title="All 2 branches covered.">        else if(coins1 == 0)</span>
+        {
+            // using coinval1 == 1
+<span class="fc" id="L299">            return Response.UNSUITABLE_CHANGE;</span>
+        }
+        else
+        {
+            // using coinval1 == 1
+<span class="fc" id="L304">            coins2 -= (res/coinval2);</span>
+<span class="fc" id="L305">            coins1--;</span>
+<span class="fc" id="L306">            balance = 0;</span>
+<span class="fc" id="L307">            num2 -= number;</span>
+
+<span class="fc" id="L309">            return Response.OK;</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

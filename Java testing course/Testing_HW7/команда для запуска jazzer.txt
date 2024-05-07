@@ -1,0 +1,1 @@
+docker run -v C:\Users\cyril\IdeaProjects\Testing_HW7\target:/fuzzing cifuzz/jazzer --cp=Testing_HW7-1.0-SNAPSHOT.jar --target_class=calc.CalcFuzzTarget

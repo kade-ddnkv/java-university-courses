@@ -1,0 +1,33 @@
+.board-cell {
+    -fx-fill: #F2F2F2;
+    -fx-stroke-width: .06em;
+    -fx-stroke-type: centered;
+    -fx-stroke: #CAD1D4;
+}
+
+.board-cell-active {
+    -fx-fill: #272822;
+}
+
+.invisible {
+    -fx-opacity: 0;
+}
+
+.button {
+    -fx-background-color: #F2F2F2;
+    -fx-background-insets: 0;
+    -fx-border-width: .05em;
+    -fx-border-color: #202931;
+}
+
+.text-field {
+    -fx-background-color: #FAFAFA;
+    -fx-background-insets: 0;
+    -fx-border-width: .05em;
+    -fx-border-color: #202931;
+}
+
+.button:hover {
+    -fx-background-color: #202931;
+    -fx-text-fill: #F2F2F2;
+}

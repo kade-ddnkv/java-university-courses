@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="jigsaw.MainGameController">
+    <children>
+        <StackPane>
+            <Group fx:id="mainBoard"/>
+        </StackPane>
+        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <children>
+                <StackPane>
+                    <Group fx:id="currentFigureBoard" onDragDetected="#onFigureDragDetected"
+                           onDragDone="#onFigureDropDone">
+                        <StackPane.margin>
+                            <Insets/>
+                        </StackPane.margin>
+                    </Group>
+                </StackPane>
+                <VBox alignment="CENTER" GridPane.rowIndex="1">
+                    <Label fx:id="timerLabel"/>
+                    <Button onAction="#onEndGameButtonClick" text="END GAME"/>
+                </VBox>
+            </children>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints percentHeight="80.0" vgrow="SOMETIMES"/>
+                <RowConstraints percentHeight="20.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+        </GridPane>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="75.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="SOMETIMES"/>
+    </rowConstraints>
+</GridPane>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccountManagerResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">AccountManagerTest Coverage Results</a> &gt; <a href="index.source.html" class="el_package">root.integrat</a> &gt; <span class="el_source">AccountManagerResponse.java</span></div><h1>AccountManagerResponse.java</h1><pre class="source lang-java linenums">package root.integrat;
+
+public class AccountManagerResponse {
+  public static int 
+<span class="fc" id="L5">      SUCCEED = 0,</span>
+<span class="fc" id="L6">      ALREADY_LOGGED = 1, </span>
+<span class="fc" id="L7">      NOT_LOGGED = 2,</span>
+<span class="fc" id="L8">      NO_USER_INCORRECT_PASSWORD = 3,</span>
+<span class="fc" id="L9">      INCORRECT_RESPONSE = 4,</span>
+<span class="fc" id="L10">      UNDEFINED_ERROR = 5, </span>
+<span class="fc" id="L11">      INCORRECT_SESSION = 6,</span>
+<span class="fc" id="L12">      NO_MONEY = 7;</span>
+  
+<span class="fc" id="L14">  public static final AccountManagerResponse ACCOUNT_MANAGER_RESPONSE =</span>
+      new AccountManagerResponse(ALREADY_LOGGED, null);
+<span class="fc" id="L16">  public static final AccountManagerResponse NO_USER_INCORRECT_PASSWORD_RESPONSE =</span>
+      new AccountManagerResponse(NO_USER_INCORRECT_PASSWORD, null);
+<span class="fc" id="L18">  public static final AccountManagerResponse UNDEFINED_ERROR_RESPONSE =</span>
+      new AccountManagerResponse(UNDEFINED_ERROR, null);
+<span class="fc" id="L20">  public static final AccountManagerResponse NOT_LOGGED_RESPONSE =</span>
+      new AccountManagerResponse(NOT_LOGGED, null);
+<span class="fc" id="L22">  public static final AccountManagerResponse INCORRECT_SESSION_RESPONSE =</span>
+      new AccountManagerResponse(INCORRECT_SESSION, null);
+<span class="fc" id="L24">  public static final AccountManagerResponse SUCCEED_RESPONSE =</span>
+      new AccountManagerResponse(SUCCEED, null);
+<span class="fc" id="L26">  public static final AccountManagerResponse NO_MONEY_RESPONSE =</span>
+      new AccountManagerResponse(NO_MONEY, null);
+  
+  public int code;
+  public Object response;
+<span class="fc" id="L31">  public AccountManagerResponse(int code, Object obj) {</span>
+<span class="fc" id="L32">    this.code = code;</span>
+<span class="fc" id="L33">    this.response = obj;</span>
+<span class="fc" id="L34">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

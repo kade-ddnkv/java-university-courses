@@ -1,0 +1,166 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > AdvSqrt</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">root.sqrt</a>
+</div>
+
+<h1>Coverage Summary for Class: AdvSqrt (root.sqrt)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdvSqrt</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (33/33)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package root.sqrt;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;/**
+<i class="no-highlight">4</i>&nbsp; * @author Victor Kuliamin
+<i class="no-highlight">5</i>&nbsp; *
+<i class="no-highlight">6</i>&nbsp; */
+<b class="fc"><i class="no-highlight">7</i>&nbsp;public class AdvSqrt extends root.sqrt.Sqrt</b>
+<i class="no-highlight">8</i>&nbsp;{
+<b class="fc"><i class="no-highlight">9</i>&nbsp;    private static double eps     = 2.25e-16;</b>
+<b class="fc"><i class="no-highlight">10</i>&nbsp;    private static long   dgmask  = 0x7FF0000000000000L;</b>
+<b class="fc"><i class="no-highlight">11</i>&nbsp;    private static long   mtmask  = 0x000FFFFFFFFFFFFFL;</b>
+<b class="fc"><i class="no-highlight">12</i>&nbsp;    private static int    dgshift = 52;</b>
+<b class="fc"><i class="no-highlight">13</i>&nbsp;    private static int    sqdgadd = 0x1FF;</b>
+<b class="fc"><i class="no-highlight">14</i>&nbsp;    private static double dnrbnd  = Double.longBitsToDouble(0x0010000000000000L);</b>
+<b class="fc"><i class="no-highlight">15</i>&nbsp;    private static long   odddeg  = 0x3FF0000000000000L;</b>
+<b class="fc"><i class="no-highlight">16</i>&nbsp;    private static long   evndeg  = 0x3FE0000000000000L;</b>
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;    public double sqrt(double x)
+<i class="no-highlight">19</i>&nbsp;    {
+<b class="fc"><i class="no-highlight">20</i>&nbsp;        if(Double.isNaN(x) || x &lt; 0) return Double.NaN;</b>
+<b class="fc"><i class="no-highlight">21</i>&nbsp;        else if(x == 0 || x == 1 || Double.isInfinite(x)) return x;</b>
+<i class="no-highlight">22</i>&nbsp;        else
+<i class="no-highlight">23</i>&nbsp;        {
+<b class="fc"><i class="no-highlight">24</i>&nbsp;            boolean dnr = false;</b>
+<b class="fc"><i class="no-highlight">25</i>&nbsp;            if(x &lt; dnrbnd)</b>
+<i class="no-highlight">26</i>&nbsp;            {
+<b class="fc"><i class="no-highlight">27</i>&nbsp;                x = x*Math.pow(2, dgshift);</b>
+<b class="fc"><i class="no-highlight">28</i>&nbsp;                dnr = true;</b>
+<i class="no-highlight">29</i>&nbsp;            }
+<i class="no-highlight">30</i>&nbsp;
+<b class="fc"><i class="no-highlight">31</i>&nbsp;            long b = Double.doubleToLongBits(x);</b>
+<b class="fc"><i class="no-highlight">32</i>&nbsp;            int d = (int)((b &amp; dgmask) &gt;&gt; dgshift);</b>
+<i class="no-highlight">33</i>&nbsp;            double res, tmp;
+<b class="fc"><i class="no-highlight">34</i>&nbsp;            int i = 0;</b>
+<i class="no-highlight">35</i>&nbsp;
+<b class="fc"><i class="no-highlight">36</i>&nbsp;            if((d &amp; 1) != 0)</b>
+<b class="fc"><i class="no-highlight">37</i>&nbsp;                b = (b &amp; mtmask) | odddeg;</b>
+<i class="no-highlight">38</i>&nbsp;            else
+<b class="fc"><i class="no-highlight">39</i>&nbsp;                b = (b &amp; mtmask) | evndeg;</b>
+<i class="no-highlight">40</i>&nbsp;
+<b class="fc"><i class="no-highlight">41</i>&nbsp;            x = Double.longBitsToDouble(b);</b>
+<b class="fc"><i class="no-highlight">42</i>&nbsp;            res = x;</b>
+<i class="no-highlight">43</i>&nbsp;
+<b class="fc"><i class="no-highlight">44</i>&nbsp;            while(Math.abs(x-res*res)/x &gt; eps)</b>
+<i class="no-highlight">45</i>&nbsp;            {
+<b class="fc"><i class="no-highlight">46</i>&nbsp;                i++;</b>
+<b class="fc"><i class="no-highlight">47</i>&nbsp;                tmp = res;</b>
+<b class="fc"><i class="no-highlight">48</i>&nbsp;                res = (tmp + x/tmp)/2;</b>
+<i class="no-highlight">49</i>&nbsp;            }
+<i class="no-highlight">50</i>&nbsp;
+<b class="fc"><i class="no-highlight">51</i>&nbsp;            b = Double.doubleToLongBits(res);</b>
+<b class="fc"><i class="no-highlight">52</i>&nbsp;            d = (int)Math.ceil((double)d/2)+sqdgadd;</b>
+<b class="fc"><i class="no-highlight">53</i>&nbsp;            if(dnr) d -= dgshift/2;</b>
+<i class="no-highlight">54</i>&nbsp;
+<b class="fc"><i class="no-highlight">55</i>&nbsp;            b = (b &amp; mtmask) | ((long)d &lt;&lt; dgshift);</b>
+<b class="fc"><i class="no-highlight">56</i>&nbsp;            res = Double.longBitsToDouble(b);</b>
+<b class="fc"><i class="no-highlight">57</i>&nbsp;            return res;</b>
+<i class="no-highlight">58</i>&nbsp;        }
+<i class="no-highlight">59</i>&nbsp;    }
+<i class="no-highlight">60</i>&nbsp;
+<i class="no-highlight">61</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-09-28 17:42</div>
+</div>
+</body>
+</html>

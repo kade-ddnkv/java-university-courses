@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="jigsaw.client.controllers.MainGameController">
+    <children>
+        <StackPane>
+            <Group fx:id="mainBoard"/>
+        </StackPane>
+        <GridPane prefHeight="247.0" prefWidth="76.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <children>
+                <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="208.0">
+                    <children>
+                        <HBox>
+                            <children>
+                                <Label text="Me: ">
+                                    <font>
+                                        <Font name="System Bold" size="12.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="meLabel" layoutX="10.0" layoutY="10.0"/>
+                            </children>
+                        </HBox>
+                        <HBox>
+                            <children>
+                                <Label text="Opp.: ">
+                                    <font>
+                                        <Font name="System Bold" size="12.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="opponentLabel" layoutX="10.0" layoutY="10.0"/>
+                            </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="35.0">
+                            <children>
+                                <Label text="M.time: ">
+                                    <font>
+                                        <Font name="System Bold" size="12.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="maxTimeLabel" layoutX="10.0" layoutY="10.0"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <StackPane GridPane.rowIndex="1">
+                    <Group fx:id="currentFigureBoard" onDragDetected="#onFigureDragDetected"
+                           onDragDone="#onFigureDropDone">
+                        <StackPane.margin>
+                            <Insets/>
+                        </StackPane.margin>
+                    </Group>
+                </StackPane>
+                <VBox alignment="CENTER" GridPane.rowIndex="2">
+                    <Label fx:id="timerLabel"/>
+                    <Button onAction="#onEndGameButtonClick" text="END GAME"/>
+                </VBox>
+            </children>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints percentHeight="25.0" vgrow="SOMETIMES"/>
+                <RowConstraints percentHeight="55.0" vgrow="SOMETIMES"/>
+                <RowConstraints percentHeight="20.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+        </GridPane>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="75.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="SOMETIMES"/>
+    </rowConstraints>
+</GridPane>
